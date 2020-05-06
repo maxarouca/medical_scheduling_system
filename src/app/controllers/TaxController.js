@@ -1,9 +1,7 @@
 import { formatISO } from 'date-fns'
-import Sequelize from 'sequelize'
+import { Op } from 'sequelize'
 import Sale from '../models/Sale'
 import formatToMoney from '../../util/formatToMoney'
-
-const { Op } = Sequelize
 
 class TaxController {
   async index(req, res) {

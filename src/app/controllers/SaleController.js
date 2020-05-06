@@ -1,10 +1,8 @@
 import * as Yup from 'yup'
 
 import { formatISO, addDays } from 'date-fns'
-import Sequelize from 'sequelize'
+import { Op } from 'sequelize'
 import Sale from '../models/Sale'
-
-const { Op } = Sequelize
 
 class SaleController {
   async index(req, res) {

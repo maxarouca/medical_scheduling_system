@@ -1,11 +1,8 @@
 import jwt from 'jsonwebtoken'
 import { promisify } from 'util'
-import Sequelize from 'sequelize'
 import User from '../app/models/User'
 
 import authConfig from '../config/auth'
-
-const { Op } = Sequelize
 
 export default async (req, res, next) => {
   const authHeader = req.headers.authorization
