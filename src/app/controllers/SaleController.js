@@ -6,7 +6,13 @@ import Sale from '../models/Sale'
 
 class SaleController {
   async index(req, res) {
-    if (req.query) {
+    const query = { req }
+
+    const isEmpty = () => {
+      return JSON.stringify(query) === '{}'
+    }
+
+    if (!isEmpty) {
       const { startDate, endDate } = req.query
 
       const start = formatISO(new Date(startDate))
