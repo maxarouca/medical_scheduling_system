@@ -1,4 +1,4 @@
-import { formatISO } from 'date-fns'
+import { formatISO, addDays } from 'date-fns'
 import { Op } from 'sequelize'
 import Sale from '../models/Sale'
 import formatToMoney from '../../util/formatToMoney'
@@ -8,7 +8,9 @@ class TaxController {
     const { startDate, endDate, tax } = req.query
 
     const start = formatISO(new Date(startDate))
-    const end = formatISO(new Date(endDate))
+    const end = formatISO(addDays(new Date(endDate), 1))
+
+    console.log(start, end)
 
     const sales = await Sale.findAll({
       where: {
