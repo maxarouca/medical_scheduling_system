@@ -6,13 +6,19 @@ import Sale from '../models/Sale'
 
 class SaleController {
   async index(req, res) {
-    const query = { req }
+    const { query } = req
 
-    const isEmpty = () => {
-      return JSON.stringify(query) === '{}'
-    }
+    // const isEmpty = () => {
+    //   return JSON.stringify(query) === '{}'
+    // }
 
-    if (!isEmpty) {
+    const isEmpty = (obj) =>
+      Object.keys(obj).length === 0 && obj.constructor === Object
+
+    console.log(query, isEmpty(query))
+
+    if (!isEmpty(query)) {
+      console.log('query')
       const { startDate, endDate } = req.query
 
       const start = formatISO(new Date(startDate))
@@ -40,6 +46,7 @@ class SaleController {
 
       return res.json({ sales })
     }
+    console.log('no query')
 
     const sales = await Sale.findAll({
       where: {
