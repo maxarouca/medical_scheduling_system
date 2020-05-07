@@ -16,7 +16,7 @@ class UserController {
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({
-        error:
+        message:
           'Falha na validação dos dados. Verifique se todos os campos foram corretamente preenchidos.',
       })
     }
@@ -28,7 +28,7 @@ class UserController {
     if (userExists) {
       return res
         .status(400)
-        .json({ error: 'Já existe um usuário cadastrado com esse email.' })
+        .json({ message: 'Já existe um usuário cadastrado com esse email.' })
     }
 
     const { id, name, email, provider } = await User.create(req.body)
@@ -56,7 +56,7 @@ class UserController {
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({
-        error:
+        message:
           'Falha na validação dos dados. Verifique se todos os campos foram corretamente preenchidos.',
       })
     }
@@ -73,13 +73,13 @@ class UserController {
       if (userExists) {
         return res
           .status(400)
-          .json({ error: 'Já existe um usuário cadastrado com esse email.' })
+          .json({ message: 'Já existe um usuário cadastrado com esse email.' })
       }
     }
 
     if (oldPassword && !(await user.checkPassword(oldPassword))) {
       return res.status(401).json({
-        error: 'Senha inválida. Por favor, digite a senha corretamente.',
+        message: 'Senha inválida. Por favor, digite a senha corretamente.',
       })
     }
 

@@ -68,7 +68,7 @@ class SaleController {
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({
-        error:
+        message:
           'Falha na validação dos dados. Verifique se todos os campos foram corretamente preenchidos.',
       })
     }
@@ -114,7 +114,7 @@ class SaleController {
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({
-        error:
+        message:
           'Falha na validação dos dados. Verifique se todos os campos foram corretamente preenchidos. ',
       })
     }
@@ -124,7 +124,7 @@ class SaleController {
     const sale = await Sale.findByPk(id)
 
     if (!sale) {
-      return res.status(400).json({ error: 'Venda não encontrada' })
+      return res.status(400).json({ message: 'Venda não encontrada' })
     }
 
     const [, affectedRows] = await Sale.update(
@@ -140,7 +140,7 @@ class SaleController {
     const sale = await Sale.findByPk(id)
 
     if (!sale) {
-      return res.status(400).json({ error: 'Venda não encontrada' })
+      return res.status(400).json({ message: 'Venda não encontrada' })
     }
 
     await Sale.destroy({ where: { id } })
