@@ -1,4 +1,4 @@
-# SOAP SALES CONTROL API
+# MEDICAL SCHEDULING SYSTEM
 
 > API developed with Node, Express using JSON files as a database
 
@@ -21,7 +21,7 @@ API developed to control appointment schedules of a medical clinic.
 Clone the project in a folder on your computer and then install the project's dependencies
 
 ```sh
-git clone https://github.com/maxarouca/soap_sales_control_api
+git clone https://github.com/maxarouca/medical_scheduling_system
 npm install
 ```
 
@@ -127,7 +127,7 @@ In this endpoint we pass a parameter with the incident id that we want to exclud
 
 ## Contributing
 
-1. Fork it (<https://github.com/maxarouca/soap_sales_control_api>)
+1. Fork it (<https://github.com/maxarouca/medical_scheduling_system>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
