@@ -76,7 +76,7 @@ Returns a list of all registered schedules.
 
 #### List SCHEDULES by date range - http://localhost:3333/schedules/interval?startDate=2020-05-01&endDate=2020-05-10 (GET)
 
-returns a list of schedules within a date range. This route expects two parameters, _startDate_, with the start date, and _endDate_, with the end date, both in iso string format.
+Returns a list of schedules within a date range. This route expects two parameters, _startDate_, with the start date, and _endDate_, with the end date, both in iso string format.
 
 #### Create SCHEDULES - http://localhost:3333/schedules (POST)
 
