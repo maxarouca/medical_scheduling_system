@@ -1,8 +1,20 @@
 import * as Yup from 'yup'
+import { resolve } from 'path'
+import fs from 'fs'
+import { uuid } from 'uuidv4'
+import bcrytpt from 'bcryptjs'
 
-import User from '../models/User'
+import loadData from '../../util/loadData'
+import checkPassword from '../../util/checkPassword'
+
+const file = resolve(__dirname, '..', '..', 'database', 'users.json')
 
 class UserController {
+  async index(req, res) {
+    const users = await loadData(file)
+    return res.json({ users })
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
@@ -21,9 +33,9 @@ class UserController {
       })
     }
 
-    const userExists = await User.findOne({
-      where: { email: req.body.email },
-    })
+    const users = await loadData(file)
+
+    const userExists = users.find((item) => item.email === req.body.email)
 
     if (userExists) {
       return res
@@ -31,8 +43,24 @@ class UserController {
         .json({ message: 'Já existe um usuário cadastrado com esse email.' })
     }
 
-    const { id, name, email, provider } = await User.create(req.body)
-    return res.json({ id, name, email, provider })
+    const user = req.body
+
+    if (user.password) {
+      user.password_hash = await bcrytpt.hash(user.password, 8)
+      delete user.password
+    }
+
+    user.id = uuid()
+
+    users.push({ ...req.body })
+
+    const { id, name, email } = user
+
+    await fs.writeFileSync(file, JSON.stringify(users), function(err) {
+      if (err) throw err
+    })
+
+    return res.json({ id, name, email })
   }
 
   async update(req, res) {
@@ -61,14 +89,15 @@ class UserController {
       })
     }
 
-    const { email, oldPassword } = req.body
+    const users = await loadData(file)
 
-    const user = await User.findByPk(req.userId)
+    const { name, email, oldPassword } = req.body
+
+    const user = await users.find((item) => item.id === req.userId)
+    const userIndex = await users.findIndex((item) => item.id === req.userId)
 
     if (email !== user.email) {
-      const userExists = await User.findOne({
-        where: { email: req.body.email },
-      })
+      const userExists = users.find((item) => item.email === req.body.email)
 
       if (userExists) {
         return res
@@ -77,15 +106,27 @@ class UserController {
       }
     }
 
-    if (oldPassword && !(await user.checkPassword(oldPassword))) {
+    if (
+      oldPassword &&
+      !(await checkPassword(oldPassword, user.password_hash))
+    ) {
       return res.status(401).json({
         message: 'Senha inválida. Por favor, digite a senha corretamente.',
       })
     }
 
-    const { id, name, provider } = await user.update(req.body)
+    user.name = req.body.name
+    user.password_hash = await bcrytpt.hash(req.body.password, 8)
 
-    return res.json({ id, name, email, provider })
+    users[userIndex] = { ...user }
+
+    const { id } = user
+
+    await fs.writeFileSync(file, JSON.stringify(users), function(err) {
+      if (err) throw err
+    })
+
+    return res.json({ id, name, email })
   }
 }
 
